@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ZOO{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-5">
+        <div class="text-center mb-5">
+            <h1>ZOO</h1>
+        </div>
+        <div class="row">
+            {% for cage in cages %}
+                {% include "index/cage.html.twig" %}
+            {% endfor %}
+        </div>
+        <div class="text-center mb-5">
+            <h4>PARK</h4>
+        </div>
+        <div class="row">
+            {% include "index/open-space.html.twig" %}
+        </div>
+    </div>
+    <div class="mt-5"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.btn__action').on('click', function (e) {
+                e.preventDefault();
+                let url = $(this).data('href');
+                let isReload = $(this).data('reload')
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "json",
+                    success: function (result) {
+                        let message = 'Something wrong';
+                        if (result.message) {
+                            message = result.message;
+                        }
+                        alert(message);
+                        if (isReload) {
+                            location.reload();
+                        }
+                    },
+                    error: function (jqXHR) {
+                        let message = '';
+                        try {
+                            let data = JSON.parse(jqXHR.responseText);
+                            if (jqXHR.status == 400 && data.message) {
+                                message = data.message;
+                            } else {
+                                message = 'Something wrong'
+                            }
+                        } catch (e) {
+                            message = 'Server error ' + e
+                        }
+                        alert(message);
+                        if (isReload) {
+                            location.reload();
+                        }
+                    },
+                });
+            });
+        });
+    </script>
+{% endblock %}

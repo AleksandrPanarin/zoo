@@ -1,0 +1,38 @@
+<div class="row">
+    {% for animal in freeAnimals %}
+        <ul class="list-group col-3">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <img src="{{ asset(animal.photo) }}" alt="{{ animal.name }}" width="150" height="100">
+                <span class="badge">
+                     <div class="col mt-1">
+
+                         <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+    Add
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      {% for cage in cages %}
+          <a class="dropdown-item btn__action"
+             data-href="{{ path('cage_action_add', {cageId: cage.id, animalId: animal.id}) }}"
+             data-reload="true"
+          >
+              Number cage: {{ cage.number }}
+          </a>
+      {% endfor %}
+  </div>
+</div>
+                    </div>
+                                   {% for action in animal.actions %}
+                                       <div class="col mt-1">
+                                <button data-href="{{ path('actions', {animalId: animal.id, action: action}) }}"
+                                        type="button" class="btn btn-sm {{ actionClasses[action] }} btn__action">
+                                    {{ actionNames[action] }}
+                                </button>
+                            </div>
+                                   {% endfor %}
+                </span>
+            </li>
+        </ul>
+    {% endfor %}
+</div>

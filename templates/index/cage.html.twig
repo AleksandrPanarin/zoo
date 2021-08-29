@@ -1,0 +1,50 @@
+<div class="col-md-4 mb-5">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr class="text-center">
+            <th scope="col">#</th>
+            <th scope="col" colspan="2">{{ cage.number }}</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="col" colspan="3"></th>
+            <th scope="col" class="text-center">
+                <button type="button" class="btn btn-warning btn__action"
+                        data-href="{{ path('cage_action_clear', {id: cage.id}) }}"
+                >Clear cage</button>
+            </th>
+        </tr>
+        {% for animal in cage.animals %}
+            <tr>
+                <th scope="row" class="align-middle">{{ animal.id }}</th>
+                <td class="align-middle">{{ animal.name }}</td>
+                <td>
+                    <img src="{{ asset(animal.photo) }}" alt="{{ animal.name }}" width="150" height="100">
+                </td>
+                <td>
+                    <div class="row">
+                        {% for action in animal.actions %}
+                            <div class="col mt-1">
+                                <button data-href="{{ path('actions', {animalId: animal.id, action: action}) }}"
+                                        type="button" class="btn btn-sm {{ actionClasses[action] }} btn__action">
+                                    {{ actionNames[action] }}
+                                </button>
+                            </div>
+                        {% endfor %}
+                        <div class="col mt-1">
+                            <button type="button" class="btn btn-danger btn-sm btn__action"
+                                    data-href="{{ path('cage_action_free', {id: animal.id}) }}"
+                                    data-reload="true"
+                            >
+                                To free
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
